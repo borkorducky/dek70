@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>บอกอ DEK70</title>
+    <title>⚙</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts (Inter & Prompt) -->
@@ -48,7 +48,7 @@
                 </div>
                 <div>
                     <h1 class="text-2xl font-bold text-gray-900 tracking-tight">บอกอ <span class="text-primary">DEK70</span></h1>
-                    <p class="text-xs text-gray-500 font-medium">DEK70 System</p>
+                    <p class="text-xs text-gray-500 font-medium">Borkor DEK70 System</p>
                 </div>
             </div>
         </div>
@@ -67,8 +67,8 @@
                         <span>GPAX</span>
                     </button>
                     <button onclick="switchTab('scores')" id="nav-scores" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all tab-btn text-gray-600 hover:bg-gray-50 hover:text-gray-900">
-                        <i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i>
-                        <span>TCAS Score</span>
+                        <i class="fa-solid fa-file w-5 text-center"></i>
+                        <span>TCAS</span>
                     </button>
                     <button onclick="switchTab('status')" id="nav-status" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all tab-btn text-gray-600 hover:bg-gray-50 hover:text-gray-900">
                         <i class="fa-solid fa-circle-check w-5 text-center"></i>
@@ -127,8 +127,8 @@
                 <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-gray-100 gap-4">
                         <div>
-                            <h2 class="text-lg font-bold text-gray-900">คะแนนสอบกลาง (TGAT / TPAT / A-Level)</h2>
-                            <p class="text-xs text-gray-500">คะแนนสอบจาก ทปอ.</p>
+                            <h2 class="text-lg font-bold text-gray-900">กำหนดการ(TGAT / TPAT / A-Level)</h2>
+                            <p class="text-xs text-gray-500">กำหนดการสมัครและสอบโดย ทปอ.</p>
                         </div>
                     </div>
 
@@ -252,10 +252,9 @@
                             <h4 class="text-base font-bold text-gray-900 mt-1">${item.subject || item.รายวิชา || '-'}</h4>
                         </div>
                         <div class="mt-4 flex items-baseline justify-between pt-4 border-t border-gray-200">
-                            <span class="text-xs text-gray-500">คะแนนที่ได้</span>
+                            <span class="text-xs text-gray-500">วันสอบ</span>
                             <div class="text-right">
                                 <span class="text-2xl font-bold text-primary">${item.score || item.คะแนน || '0'}</span>
-                                <span class="text-xs text-gray-400">/${item.maxScore || item.คะแนนเต็ม || '100'}</span>
                             </div>
                         </div>
                     </div>
