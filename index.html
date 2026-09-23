@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>บอกอ DEK70</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter & Prompt) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8A0303',
+                        primaryHover: '#6D0202',
+                        primaryLight: '#FDF2F2',
+                        accent: '#B91C1C'
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Prompt', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 h-full flex flex-col antialiased">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center text-white text-2xl font-bold shadow-md shadow-primary/20">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 tracking-tight">บอกอ <span class="text-primary">DEK70</span></h1>
+                    <p class="text-xs text-gray-500 font-medium">DEK70 System</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row gap-8">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 shrink-0">
+            <div class="bg-white rounded-2xl border border-gray-200 p-4 shadow-sm sticky top-28">
+                <p class="px-3 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">เมนูหลัก</p>
+                <nav class="space-y-1.5">
+                    <button onclick="switchTab('gpax')" id="nav-gpax" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all tab-btn bg-primary text-white shadow-md shadow-primary/20">
+                        <i class="fa-solid fa-chart-line w-5 text-center"></i>
+                        <span>GPAX</span>
+                    </button>
+                    <button onclick="switchTab('scores')" id="nav-scores" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all tab-btn text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                        <i class="fa-solid fa-file-invoice-dollar w-5 text-center"></i>
+                        <span>TCAS Score</span>
+                    </button>
+                    <button onclick="switchTab('status')" id="nav-status" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all tab-btn text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                        <i class="fa-solid fa-circle-check w-5 text-center"></i>
+                        <span>Status</span>
+                    </button>
+                    <button onclick="switchTab('profile')" id="nav-profile" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all tab-btn text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                        <i class="fa-solid fa-user-gear w-5 text-center"></i>
+                        <span>Profile</span>
+                    </button>
+                </nav>
+
+                        <button onclick="fetchSheetData()" class="mt-3 w-full py-2 bg-primary hover:bg-primaryHover text-white rounded-lg text-xs font-semibold transition-all shadow-sm flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-rotate" id="refreshIcon"></i>
+                            <span>Refresh</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content Area -->
+        <div class="flex-1 min-w-0">
+            
+            <!-- Tab 1: GPAX -->
+            <div id="tab-gpax" class="tab-content space-y-6">
+                <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-gray-100 gap-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-900">ผลการเรียนเฉลี่ย(GPAX)</h2>
+                            <p class="text-xs text-gray-500">แสดงผลการเรียนสะสม</p>
+                        </div>
+                        <div class="bg-primaryLight px-4 py-2 rounded-xl border border-red-100 text-center">
+                            <span class="text-xs text-gray-500 block">GPAX เฉลี่ยรวม</span>
+                            <span id="gpaxTotal" class="text-2xl font-bold text-primary">-</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-gray-200 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                                    <th class="py-3 px-4">ภาคเรียน</th>
+                                    <th class="py-3 px-4 text-center">เกรดเฉลี่ย</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gpaxTableBody" class="divide-y divide-gray-100 text-sm">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Scores -->
+            <div id="tab-scores" class="tab-content hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-gray-100 gap-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-900">คะแนนสอบกลาง (TGAT / TPAT / A-Level)</h2>
+                            <p class="text-xs text-gray-500">คะแนนสอบจาก ทปอ.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="scoresGrid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Status -->
+            <div id="tab-status" class="tab-content hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                    <div class="pb-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-900">สถานะการสมัคร</h2>
+                            <p class="text-xs text-gray-500">สถานะการสมัครมหาวิทยาลัย</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 space-y-4" id="statusList">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Profile -->
+            <div id="tab-profile" class="tab-content hidden space-y-6">
+                <div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
+                    <div class="pb-6 border-b border-gray-100">
+                        <h2 class="text-lg font-bold text-gray-900">Profile</h2>
+                        <p class="text-xs text-gray-500">ข้อมูลส่วนตัวผู้สมัคร</p>
+                    </div>
+
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6" id="profileDetails">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Embedded Google Sheet Web App URL provided by user
+        const scriptUrl = 'https://script.google.com/macros/s/AKfycbxgUrVf32gsaCQ4b6EIBtc5oHewIxvlu10tdNl0VcxN1BnBRG5f8rsqjXOyj7YfHaSd/exec';
+
+        // Initial empty state (no mock data)
+        let appData = {
+            gpax: [],
+            scores: [],
+            status: [],
+            profile: []
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderAllData();
+            fetchSheetData();
+        });
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all tab-btn text-gray-600 hover:bg-gray-50 hover:text-gray-900";
+            });
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            activeBtn.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition-all tab-btn bg-primary text-white shadow-md shadow-primary/20";
+        }
+
+        // Render All Data to UI
+        function renderAllData() {
+            renderGpax();
+            renderScores();
+            renderStatus();
+            renderProfile();
+        }
+
+        function renderGpax() {
+            const tbody = document.getElementById('gpaxTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            
+            if (appData.gpax.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="py-8 text-center text-gray-400 text-sm">กำลังโหลด...</td></tr>`;
+                document.getElementById('gpaxTotal').innerText = '-';
+                return;
+            }
+
+            let totalGpa = 0;
+            appData.gpax.forEach(item => {
+                totalGpa += parseFloat(item.gpa || item.เกรด || 0);
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50/80">
+                        <td class="py-3 px-4 font-medium text-gray-900">${item.term || item.ภาคเรียน || '-'}</td>
+                        <td class="py-3 px-4 text-center font-bold text-primary">${item.gpa || item.เกรด || '-'}</td>
+                    </tr>
+                `;
+            });
+            const avg = (totalGpa / appData.gpax.length).toFixed(2);
+            document.getElementById('gpaxTotal').innerText = avg;
+        }
+
+        function renderScores() {
+            const grid = document.getElementById('scoresGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            if (appData.scores.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-12 text-center text-gray-400 text-sm bg-gray-50 rounded-2xl border border-dashed border-gray-200">กำลังโหลด...</div>`;
+                return;
+            }
+
+            appData.scores.forEach(item => {
+                grid.innerHTML += `
+                    <div class="bg-gray-50 rounded-2xl p-5 border border-gray-200 flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">${item.date || item.วันที่ || 'คะแนนสอบ'}</span>
+                            <h4 class="text-base font-bold text-gray-900 mt-1">${item.subject || item.รายวิชา || '-'}</h4>
+                        </div>
+                        <div class="mt-4 flex items-baseline justify-between pt-4 border-t border-gray-200">
+                            <span class="text-xs text-gray-500">คะแนนที่ได้</span>
+                            <div class="text-right">
+                                <span class="text-2xl font-bold text-primary">${item.score || item.คะแนน || '0'}</span>
+                                <span class="text-xs text-gray-400">/${item.maxScore || item.คะแนนเต็ม || '100'}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderStatus() {
+            const list = document.getElementById('statusList');
+            if (!list) return;
+            list.innerHTML = '';
+
+            if (appData.status.length === 0) {
+                list.innerHTML = `<div class="py-12 text-center text-gray-400 text-sm bg-gray-50 rounded-2xl border border-dashed border-gray-200">กำลังโหลด...</div>`;
+                return;
+            }
+
+            appData.status.forEach((item, index) => {
+                const itemStatus = (item.status || item.สถานะ || '');
+                const isCompleted = (itemStatus === 'สำเร็จ' || itemStatus === 'ผ่านการสอบสัมภาษณ์' || itemStatus === 'เสร็จสิ้น');
+                const isNotCompleted = (itemStatus !== 'ไม่ผ่านการสอบสัมภาษณ์' && itemStatus !== 'ไม่มีสิทธิ์สอบสัมภาษณ์');
+                const imageUrl = (item.image || item.imageUrl || item.รูปภาพ || item.img || '').trim();
+
+                list.innerHTML += `
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 rounded-2xl bg-gray-50 border border-gray-200 gap-4">
+                        <div class="flex items-start sm:items-center space-x-4 w-full sm:w-auto">
+                            <div class="w-10 h-10 rounded-xl ${isCompleted ? 'bg-emerald-100 text-emerald-600' : 'bg-primaryLight text-primary'} flex items-center justify-center font-bold text-sm shrink-0">
+                                ${item.step || item.ขั้นตอน || (index + 1)}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="text-sm font-bold text-gray-900">${item.title || item.หัวข้อ || '-'}</h4>
+                                <p class="text-xs text-gray-500 mt-0.5">สาขา: ${item.date || item.วันที่ || '-'}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4 w-full sm:w-auto justify-between sm:justify-end">
+                            ${imageUrl ? `
+                                <a href="${imageUrl}" target="_blank" class="group relative w-12 h-12 rounded-xl overflow-hidden border border-gray-200 bg-white shrink-0 shadow-sm hover:ring-2 hover:ring-primary transition-all">
+                                    <img src="${imageUrl}" alt="หลักฐาน" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/100x100/FDF2F2/8A0303?text=Error';">
+                                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-xs">
+                                        <i class="fa-solid fa-magnifying-glass-plus"></i>
+                                    </div>
+                                </a>
+                            ` : `
+                                <div class="w-12 h-12 rounded-xl border border-dashed border-gray-200 bg-gray-100 flex items-center justify-center text-gray-400 text-xs shrink-0" title="ไม่มีรูปภาพหลักฐาน">
+                                    <i class="fa-regular fa-image"></i>
+                                </div>
+                            `}
+                            
+                            <span class="px-3.5 py-1.5 rounded-full text-xs font-semibold ${isCompleted ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-700 border border-amber-200'} shrink-0">
+                                ${itemStatus || 'รอตรวจสอบ'}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function renderProfile() {
+            const details = document.getElementById('profileDetails');
+            if (!details) return;
+            details.innerHTML = '';
+
+            if (appData.profile.length === 0) {
+                details.innerHTML = `<div class="col-span-full py-12 text-center text-gray-400 text-sm bg-gray-50 rounded-2xl border border-dashed border-gray-200">กำลังโหลด...</div>`;
+                return;
+            }
+
+            appData.profile.forEach(item => {
+                details.innerHTML += `
+                    <div class="bg-gray-50 p-4 rounded-2xl border border-gray-200">
+                        <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">${item.field || item.หัวข้อ || '-'}</span>
+                        <p class="text-base font-bold text-gray-900 mt-1">${item.value || item.ค่า || '-'}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // Fetch live data directly from Google Sheet Web App
+        async function fetchSheetData() {
+            const icon = document.getElementById('refreshIcon');
+            if (icon) icon.classList.add('fa-spin');
+            
+            try {
+                const response = await fetch(scriptUrl, { method: 'GET', redirect: 'follow' });
+                const text = await response.text();
+                
+                if (text.trim().startsWith('<') || text.trim().startsWith('<!DOCTYPE')) {
+                    throw new Error("Received HTML login/error page instead of JSON.");
+                }
+                
+                const data = JSON.parse(text);
+                if (data) {
+                    appData.gpax = data.gpax || [];
+                    appData.scores = data.scores || [];
+                    appData.status = data.status || [];
+                    appData.profile = data.profile || [];
+                    
+                    renderAllData();
+                }
+            } catch (error) {
+                console.error("Failed to fetch Google Sheet data:", error);
+            } finally {
+                if (icon) icon.classList.remove('fa-spin');
+            }
+        }
+    </script>
+</body>
+</html>
